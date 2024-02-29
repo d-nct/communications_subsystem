@@ -5,6 +5,7 @@
 #include "_types.h"
 #include "Logger.h"
 #include "Package.h"
+#include "MonitorRF.h"
 
 #include <LoRa.h>
 
@@ -25,7 +26,7 @@ public:
     /**
      * Configura o pacote com o ID e timestamp.
     */
-    void configurePackage(Telemetry& packet);
+    void configurePacket(Telemetry& packet);
 
     /**
      * Recebe uma mensagem serializada via LoRa.
@@ -38,33 +39,30 @@ public:
     /**
      * Retorna o buffer de recebimento.
     */
-    com_serialized* getBufferReceiver();
+    com_serialized* getBufferReceiver() { return buffer_receiver; }
 
     /**
-     * Monitora a comunicação LoRa.
+     * Retorna o ID do pacote.
     */
-    void monitor();
+    static com_uint getPacketId() { return packet_id; }
 
-    com_uint getPackageId();
+    /**
+     * Incrementa o ID do pacote.
+    */
+    void updatePacketId();
 
-    void updatePackageId();
+    /**
+     * Retorna o último ID recebido.
+    */
+    static com_uint getLastReceivedId() { return telemetry_received.id; }
 
 private:
-    com_uint package_id = 0;
-    uint packages_received = 0;
-    uint packages_sended = 0;
-    uint packages_lost = 0;
-    float packages_received_rate = 0;
+    static com_uint packet_id;
 
     static const int telemetry_length = sizeof(Telemetry); // Tamanho da mensagem serializada
     com_serialized buffer_sender[telemetry_length];
     com_serialized buffer_receiver[telemetry_length];
-    Telemetry telemetry_received;
-    
-    RF_RSSI_Status_t status_rssi;
-    RF_Packet_Status_t status_packet;
-
-
+    static Telemetry telemetry_received;
 };
 
 #endif // COMMUNICATIONRF_H

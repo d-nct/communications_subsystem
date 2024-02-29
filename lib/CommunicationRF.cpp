@@ -3,6 +3,10 @@
 int ComRF::setup() {
     int status;
 
+    /* Inicialização das variáveis privadas */
+    packet_id = 1; // Inicializa o ID do pacote em 1
+    telemetry_received.id = 0; // Inicializa o ID do último pacote recebido em 0
+
     // Inicializa o LoRa
     LoRa.setPins(LORA_PIN_SS, LORA_PIN_RST, LORA_PIN_DIO0);
     
@@ -35,20 +39,16 @@ void ComRF::sendPacket(const Telemetry& packet) {
     Logger::print(LOG_DEBUG, "\n");
 
     // Atualiza o contador de pacotes enviados
-    packages_sended++;
+    MonitorRF::incrementPacketSended();
 }
 
-void ComRF::configurePackage(Telemetry& packet) {
-    packet.id = getPackageId();
+void ComRF::configurePacket(Telemetry& packet) {
+    packet.id = getPacketId();
     packet.timestamp = millis();
 }
 
-com_uint ComRF::getPackageId() {
-    return package_id;
-}
-
-void ComRF::updatePackageId() {
-    package_id++;
+void ComRF::updatePacketId() {
+    packet_id++;
 }
 
 
@@ -56,7 +56,7 @@ Telemetry* ComRF::receivePacket() {
     int packetSize = LoRa.parsePacket();
     if (packetSize) {
         // atualiza o contador de pacotes recebidos
-        packages_received++;
+        MonitorRF::incrementPacketReceived();
 
         // Logga
         Logger::log(LOG_INFO, "LoRa: Pacote recebido.");
@@ -77,41 +77,4 @@ Telemetry* ComRF::receivePacket() {
     telemetry_received = Package::deserialize(buffer_receiver);
 
     return &telemetry_received;
-}
-
-com_serialized* ComRF::getBufferReceiver() {
-    return buffer_receiver;
-}
-
-void ComRF::monitor() {
-
-    // Verifica o RSSI
-    if (LoRa.packetRssi() > -85) {
-        status_rssi = RSSI_GOOD;
-    } else if (LoRa.packetRssi() > -100) {
-        status_rssi = RSSI_NORMAL;
-    } else if (LoRa.packetRssi() > -110) {
-        status_rssi = RSSI_WARNING;
-    } else {
-        status_rssi = RSSI_CRITICAL;
-    }
-
-    // Verifica o status do pacote
-    if (telemetry_received.id == 0) {
-        status_packet = PACKET_NO_SIGNAL;
-    } else {
-        packages_received_rate = (float) packages_received / (float) telemetry_received.id;
-        if (packages_received_rate > 0.75) {
-            status_packet = PACKET_GOOD;
-        } else if (packages_received_rate > 0.50) {
-            status_packet = PACKET_NORMAL;
-        } else if (packages_received_rate > 0.25) {
-            status_packet = PACKET_WARNING;
-        } else if (packages_received_rate > 0.05) {
-            status_packet = PACKET_CRITICAL;
-        } else {
-            status_packet = PACKET_NO_SIGNAL;
-        }
-    }
-
 }
