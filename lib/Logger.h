@@ -12,7 +12,8 @@ public:
    * @param level The log level of the message.
    * @param message The message to log.
   */
-  static void log(LogLevel_t level, const char* message);
+  template <typename T>
+  static void log(LogLevel_t level, const T& message);
 
   /**
    * Log a message with the given log level, without newline.
@@ -20,7 +21,8 @@ public:
    * @param level The log level of the message.
    * @param message The message to log.
   */
-  static void print(LogLevel_t level, const char* message);
+  template <typename T>
+  static void print(LogLevel_t level, const T& message);
 
   /**
    * Set the minimum log level to log a message.

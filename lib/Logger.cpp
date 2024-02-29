@@ -1,7 +1,7 @@
 #include "Logger.h"
 
-
-void Logger::log(LogLevel_t level, const char* message) {
+template <typename T>
+void Logger::log(LogLevel_t level, const T& message) {
     if (level >= levelThreshold) {
         Serial.print("[");
         Serial.print(toString(level));
@@ -10,7 +10,8 @@ void Logger::log(LogLevel_t level, const char* message) {
     }
 }
 
-void Logger::print(LogLevel_t level, const char* message) {
+template <typename T>
+void Logger::print(LogLevel_t level, const T& message) {
     if (level >= levelThreshold) {
         Serial.print(message);
     }
