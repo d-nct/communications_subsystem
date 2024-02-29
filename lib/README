@@ -1,6 +1,7 @@
 # Medos e Aflições
 
 - Me incomoda um pouco o método de serialização usando o `std::memcpy`. Acho meio gambiarra e não gosto do malloc implícito. Pode ser fonte de memory leak.
+  - https://en.cppreference.com/w/cpp/string/byte/memcpy
 
 ---
 This directory is intended for project specific (private) libraries.
