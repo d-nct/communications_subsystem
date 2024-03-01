@@ -3,6 +3,7 @@
 
 #include "_config.h"
 #include "_types.h"
+#include "Logger.h"
 
 #include <cstring>
 
@@ -24,6 +25,13 @@ public:
      * @param serializedData A mensagem a ser deserializada.
     */
     static Telemetry deserialize(const com_serialized* serializedData);
+
+    /**
+     * Imprime a telemetria. É verborrágico até o LOG_INFO.
+     * 
+     * @param telemetry A telemetria a ser impressa.
+    */
+    static void printTelemetry(const Telemetry& telemetry);
 };
 
 #endif // PACKAGE_H
