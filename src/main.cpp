@@ -1,18 +1,36 @@
-#include <Arduino.h>
+/* Includes */
+#include "_config.h"
+#include "_types.h"
 
-// put function declarations here:
-int myFunction(int, int);
+/* Bibliotecas */
+#include "CommunicationRF.h"
+#include "MonitorRF.h"
+#include "Package.h"
+#include "Logger.h"
+
+/* Declaração dos Objetos */
+ComRF comm;
+Telemetry telemetry_sender;
+ulong clk = 0;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  comm.setup(); // Inicializa o LoRa
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  /* Rotina de TX */
+  if (millis() - clk > LORA_INTERVAL) {
+    comm.configurePacket(telemetry_sender); // Configura o pacote com o ID e timestamp
+    comm.sendPacket(telemetry_sender); // Envia o pacote
+    clk = millis();
+  }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  /* Rotina de RX */
+  Telemetry* received = comm.receivePacket(); // Recebe o pacote
+  if (received != NULL) {
+    Package::printTelemetry(*received); // Logga o pacote recebido
+  }
+
+  /* Monitoramento */
+  MonitorRF::monitor();
 }
