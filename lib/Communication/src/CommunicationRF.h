@@ -30,9 +30,6 @@ public:
 
     /**
      * Recebe uma mensagem serializada via LoRa.
-     * 
-     * Atenção: a mensagem fica armazenada no buffer_receiver até receber a próxima, então seja rápido!0.
-     * A responsabilidade de desserializar a mensagem é do usuário. Use Package::deserializeStruct(buffer_receiver) para isso.
     */
     Telemetry* receivePacket();
 
