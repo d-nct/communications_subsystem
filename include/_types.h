@@ -44,6 +44,7 @@ typedef double                    com_double;
 typedef uint8_t                   com_serialized;
 
 /* Pacote de Telemetria */
+#pragma pack(push, 1) // Para que o alinhamento padrão seja de 1 byte. O compilador tá proibído de mudar isso, colocar bytes no meio etc
 typedef struct {
     com_uint  id;
     com_uint  timestamp; 
@@ -55,5 +56,6 @@ typedef struct {
     com_float voltage;
     com_float temperature;
 } Telemetry;
+#pragma pack(pop)
 
 #endif // _TYPES_H
