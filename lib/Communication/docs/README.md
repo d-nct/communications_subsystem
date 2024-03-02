@@ -1,6 +1,6 @@
-# Communication
+# Communication Lib
 
-## `CommunicationRF`
+## `ComRF` Class
 ### Overview
 The `ComRF` class in `CommunicationRF.h` is a C++ class that facilitates communication using LoRa technology. It provides methods for initializing LoRa, sending and receiving telemetry packets, and managing packet configurations.
 
@@ -17,7 +17,7 @@ See the doxygen in `CommunicationRF.h`.
 4. Retrieve received telemetry using `receivePacket()` and access the data using appropriate methods.
 
 
-## `MonitorRF`
+## `MonitorRF` Class
 ### Overview 
 The `MonitorRF` class, defined in the "MonitorRF.h" file, is responsible for monitoring the transceiver communication status. It keeps track of important metrics such as RSSI (Received Signal Strength Indication), packet success rate, and various status indicators. The class provides methods for updating and retrieving these metrics, as well as logging the monitoring results.
 
@@ -32,11 +32,14 @@ See the doxygen in `CommunicationRF.h`.
 2. Incremental Packet Counting: Use `incrementPacketSended()` and `incrementPacketReceived()` methods to keep track of the total sent and received packets. This is already implemented in `ComRF::sendPacket()` and `ComRF::receivePacket()`.
 
 
-## `Package`
+## `Package` Class
 ### Overview
 The `Package` class, defined in the "Package.h" file, provides functionalities for serializing and deserializing telemetry data. Telemetry, represented by the Telemetry structure, is a structured set of data related to communication status or other relevant metrics. Additionally, the class includes a method for printing telemetry data in a verbose manner using the Logger class.
 
 Please, be shure to fill the `Telemetry` struct, defined in `_types.h` to match the sensors in the project design.
+
+### Methods and Members
+See the doxygen in `Package.h`.
 
 ### Additional Considerations
 1. Review and potentially optimize the deserialization approach to avoid unnecessary object creation.
