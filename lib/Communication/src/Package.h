@@ -27,7 +27,7 @@ public:
     static Telemetry deserialize(const com_serialized* serializedData);
 
     /**
-     * Imprime a telemetria. É verborrágico até o LOG_INFO.
+     * Imprime a telemetria no nível LOG_INFO.
      * 
      * @param telemetry A telemetria a ser impressa.
     */
